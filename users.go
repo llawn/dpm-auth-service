@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -12,6 +13,8 @@ type User struct {
 	Email        string
 	Username     string
 	PasswordHash string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 type DB struct{ pool *pgxpool.Pool }
@@ -53,9 +56,9 @@ func (db *DB) GetUserByEmail(ctx context.Context, email string) (*User, error) {
 	u := &User{}
 	err := db.pool.QueryRow(
 		ctx,
-		`SELECT id, email, username, password_hash FROM users WHERE email = $1`,
+		`SELECT id, email, username, password_hash, created_at, updated_at FROM users WHERE email = $1`,
 		email,
-	).Scan(&u.ID, &u.Email, &u.Username, &u.PasswordHash)
+	).Scan(&u.ID, &u.Email, &u.Username, &u.PasswordHash, &u.CreatedAt, &u.UpdatedAt)
 
 	if err != nil {
 		return nil, fmt.Errorf("get user by email: %w", err)
@@ -67,9 +70,9 @@ func (db *DB) GetUserByID(ctx context.Context, id string) (*User, error) {
 	u := &User{}
 	err := db.pool.QueryRow(
 		ctx,
-		`SELECT id, email, username, password_hash FROM users WHERE id = $1`,
+		`SELECT id, email, username, password_hash, created_at, updated_at FROM users WHERE id = $1`,
 		id,
-	).Scan(&u.ID, &u.Email, &u.Username, &u.PasswordHash)
+	).Scan(&u.ID, &u.Email, &u.Username, &u.PasswordHash, &u.CreatedAt, &u.UpdatedAt)
 
 	if err != nil {
 		return nil, fmt.Errorf("get user by id: %w", err)
@@ -81,9 +84,9 @@ func (db *DB) GetUserByUsername(ctx context.Context, username string) (*User, er
 	u := &User{}
 	err := db.pool.QueryRow(
 		ctx,
-		`SELECT id, email, username, password_hash FROM users WHERE username = $1`,
+		`SELECT id, email, username, password_hash, created_at, updated_at FROM users WHERE username = $1`,
 		username,
-	).Scan(&u.ID, &u.Email, &u.Username, &u.PasswordHash)
+	).Scan(&u.ID, &u.Email, &u.Username, &u.PasswordHash, &u.CreatedAt, &u.UpdatedAt)
 
 	if err != nil {
 		return nil, fmt.Errorf("get user by username: %w", err)

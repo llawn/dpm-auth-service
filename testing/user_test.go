@@ -34,6 +34,8 @@ func getUserByEmail(t *testing.T, db *auth.DB, ctx context.Context, want auth.Us
 	if err != nil {
 		t.Fatalf("failed to get user by email: %v", err)
 	}
+	want.CreatedAt = got.CreatedAt
+	want.UpdatedAt = got.UpdatedAt
 	if diff := cmp.Diff(&want, got); diff != "" {
 		t.Errorf("GetUserByEmail() mismatch (-want +got):\n%s", diff)
 	}
@@ -45,6 +47,8 @@ func getUserByID(t *testing.T, db *auth.DB, ctx context.Context, want auth.User)
 	if err != nil {
 		t.Fatalf("failed to get user by id: %v", err)
 	}
+	want.CreatedAt = got.CreatedAt
+	want.UpdatedAt = got.UpdatedAt
 	if diff := cmp.Diff(&want, got); diff != "" {
 		t.Errorf("GetUserByID() mismatch (-want +got):\n%s", diff)
 	}
@@ -56,6 +60,8 @@ func getUserByUsername(t *testing.T, db *auth.DB, ctx context.Context, want auth
 	if err != nil {
 		t.Fatalf("failed to get user by username: %v", err)
 	}
+	want.CreatedAt = got.CreatedAt
+	want.UpdatedAt = got.UpdatedAt
 	if diff := cmp.Diff(&want, got); diff != "" {
 		t.Errorf("GetUserByUsername() mismatch (-want +got):\n%s", diff)
 	}
